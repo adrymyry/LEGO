@@ -4,7 +4,7 @@
 cp ../DigiCertCA/files/interfaces /etc/network/interfaces
 
 # Copiamos ficheros CA
-cp ../DigiCertCA/files/demoCA /home/alumno/
+cp -r ../DigiCertCA/files/demoCA/ /home/alumno/
 cp ../DigiCertCA/files/openssl.cnf /usr/lib/ssl/
 
 # Montamos DNS Server
@@ -20,5 +20,15 @@ echo "@daily openssl ca -keyfile /home/alumno/demoCA/private/cakey.pem -gencrl -
 crontab mycron
 rm mycron
 
+# Instalamos Apache para servir la crl
+apt-get install -y apache2
+
 # Creamos un enlace símbolico para servir la crl con Apache
-ln -s /home/alumno/demoCA/crl/ca-crl.pem /var/www/ca-crl.pem
+ln -s /var/www/ca-crl.pem /home/alumno/demoCA/crl/ca-crl.pem
+
+# Montamos OCSP Server
+openssl ocsp -port 127.0.0.1:3333 -text -sha256\
+ -index /home/alumno/demoCA/index.txt\
+ -CA /home/alumno/demoCA/cacert.pem\
+ -rkey /home/alumno/demoCA/ocsp/ocspkey.pem\
+ -rsigner /home/alumno/demoCA/ocsp/ocspkey.pem &
