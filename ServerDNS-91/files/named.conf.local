@@ -1,0 +1,24 @@
+//
+// Do any local configuration here
+//
+zone "fb.com." IN {
+	type master;
+	file "/etc/bind/db.fb.com.zone";
+};
+
+zone "ig.com." IN {
+	type forward;
+   	forward only;
+   	forwarders { 192.168.92.2; };
+};
+
+zone "digicert.com." IN {
+	type forward;
+   	forward only;
+   	forwarders { 192.168.91.99; };
+};
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+

@@ -1,0 +1,12 @@
+$ORIGIN 	digicert.com.
+$TTL 		3600
+@ 	IN 	SOA 	dns1.digicert.com. root.dns1.digicert.com (
+				1 	; Serial
+				3600	; Refresh (1 hour)
+				1800	; Retry (30 min)
+				604800	; Expire (7 days)
+				3600 )	; minimum (1 hour)
+@	IN	NS	dns1
+dns1	IN	A	192.168.91.99
+www	IN	A	192.168.91.99
+
