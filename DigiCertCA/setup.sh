@@ -24,10 +24,10 @@ rm mycron
 apt-get install -y apache2
 
 # Creamos un enlace símbolico para servir la crl con Apache
-ln -s /home/alumno/demoCA/crl/ca-crl.pem /var/www/ca-crl.pem
+ln -s /home/alumno/demoCA/crl/ca-crl.pem /var/www/html/ca-crl.pem
 
 # Montamos OCSP Server
-openssl ocsp -port 127.0.0.1:3333 -text -sha256\
+openssl ocsp -port 3333 -text -sha256\
  -index /home/alumno/demoCA/index.txt\
  -CA /home/alumno/demoCA/cacert.pem\
  -rkey /home/alumno/demoCA/ocsp/ocspkey.pem\
