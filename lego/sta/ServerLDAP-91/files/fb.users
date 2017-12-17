@@ -1,0 +1,14 @@
+dn: ou=engineers,dc=fb,dc=com
+changetype: add
+objectclass: organizationalunit
+
+dn: cn=Adrian Miralles,ou=engineers,dc=fb,dc=com
+changetype: add
+objectclass: inetOrgPerson
+sn: Miralles
+cn: Adrian Miralles
+uid: adrian
+mobile: 911
+userPassword: 12345
+employeeType: hackamonth
+ou: engineers

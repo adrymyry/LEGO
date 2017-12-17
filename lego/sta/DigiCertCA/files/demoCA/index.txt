@@ -1,0 +1,9 @@
+V	181211152642Z		01	unknown	/C=US/O=Facebook 91/CN=radius.fb.com
+V	181211152736Z		02	unknown	/C=US/O=Instagram 92/CN=radius.ig.com
+V	181211153514Z		03	unknown	/C=US/O=Facebook 91/CN=Adrian Miralles/emailAddress=adrian@fb.com
+V	181211153610Z		04	unknown	/C=US/O=Facebook 91/CN=owncloud.fb.com
+V	181211153834Z		05	unknown	/C=US/O=Instagram 92/CN=Jorge Gallego/emailAddress=jorge@ig.com
+R	181211153917Z	171211154627Z	06	unknown	/C=US/O=Facebook 91/CN=Jorge Gallego/emailAddress=jorge@fb.com
+V	181211154118Z		07	unknown	/C=US/O=Facebook 91/CN=asterisk.fb.com
+V	181211154251Z		08	unknown	/C=US/O=Instagram 92/CN=asterisk.ig.com
+V	181211154513Z		09	unknown	/C=US/O=DigiCert/CN=www.digicert.com

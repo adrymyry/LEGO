@@ -1,0 +1,13 @@
+dn: ou=engineers,dc=ig,dc=com
+changetype: add
+objectclass: organizationalunit
+
+dn: cn=Jorge Gallego,ou=engineers,dc=ig,dc=com
+changetype: add
+objectclass: inetOrgPerson
+sn: Gallego
+cn: Jorge Gallego
+uid: jorge
+mobile: 922
+userPassword: 12345
+ou: engineers
