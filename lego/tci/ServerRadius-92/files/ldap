@@ -30,7 +30,7 @@ ldap {
 	#
 	#  Note that this needs to match the name in the LDAP
 	#  server certificate, if you're using ldaps.
-	server = "192.168.92.8"
+	server = "ldap.ig.com"
 	identity = "cn=admin,dc=ig,dc=com"
 	password = Instagram92
 	basedn = "dc=ig,dc=com"

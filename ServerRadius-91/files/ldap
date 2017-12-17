@@ -30,12 +30,12 @@ ldap {
 	#
 	#  Note that this needs to match the name in the LDAP
 	#  server certificate, if you're using ldaps.
-	server = "192.168.91.8"
+	server = "ldap.fb.com"
 	identity = "cn=admin,dc=fb,dc=com"
 	password = Facebook91
 	basedn = "dc=fb,dc=com"
 	filter = "(uid=%{%{Stripped-User-Name}:-%{User-Name}})"
-	base_filter = "(employeeType=hackamonth)"
+	# base_filter = "(employeeType=hackamonth)"
 	password_atrribute = userPassword
 
 	#  How many connections to keep open to the LDAP server.
