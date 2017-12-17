@@ -553,23 +553,23 @@ post-auth {
 				Tunnel-Medium-Type = 6
 				Tunnel-Private-Group-ID = 95
 				Tunnel-Type = VLAN
-				Reply-Message += "Bienvenido al programa Hackamonth"
+				Reply-Message = "Bienvenido al programa Hackamonth"
 			}
 		}
 	}
 	elsif ("%{reply:Reply-Message}" == "hackamonth") {
-                update reply {
-                        Tunnel-Medium-Type = 6
-                        Tunnel-Private-Group-ID = 95
-                        Tunnel-Type = VLAN
-                        Reply-Message += "Bienvenido al programa Hackamonth"
-                }
-        }
-        else {
-                if ("%{Realm}" == "ig.com") {
-                        reject
-                }
-        }
+		update reply {
+				Tunnel-Medium-Type = 6
+				Tunnel-Private-Group-ID = 95
+				Tunnel-Type = VLAN
+				Reply-Message = "Bienvenido al programa Hackamonth"
+		}
+	}
+	else {
+		if ("%{Realm}" == "ig.com") {
+				reject
+		}
+	}
 
 	#  MacSEC requires the use of EAP-Key-Name.  However, we don't
 	#  want to send it for all EAP sessions.  Therefore, the EAP

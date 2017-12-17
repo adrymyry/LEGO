@@ -538,24 +538,23 @@ post-auth {
 				Tunnel-Medium-Type = 6
 				Tunnel-Private-Group-ID = 95
 				Tunnel-Type = VLAN
-				Reply-Message += "Bienvenido al programa Hackamonth"
+				Reply-Message = "Bienvenido al programa Hackamonth"
 			}
 		}
 	}
-
 	elsif ("%{reply:Reply-Message}" == "hackamonth") {
-                update reply {
-                        Tunnel-Medium-Type = 6
-                        Tunnel-Private-Group-ID = 95
-                        Tunnel-Type = VLAN
-                        Reply-Message += "Bienvenido al programa Hackamonth"
-                }
+        update reply {
+			Tunnel-Medium-Type = 6
+			Tunnel-Private-Group-ID = 95
+			Tunnel-Type = VLAN
+			Reply-Message = "Bienvenido al programa Hackamonth"
         }
-        else {
-                if ("%{Realm}" == "fb.com") {
-                        reject
-                }
-        }
+    }
+	else {
+		if ("%{Realm}" == "fb.com") {
+				reject
+		}
+	}
 
 
 #
