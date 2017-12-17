@@ -8,6 +8,7 @@ $CONFIG = array (
   array (
     0 => '192.168.91.6',
     1 => 'owncloud.fb.com',
+    2 => 'owncloud.ig.com',
   ),
   'datadirectory' => '/var/www/owncloud/data',
   'overwrite.cli.url' => 'http://192.168.91.6/owncloud',
