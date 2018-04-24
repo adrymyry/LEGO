@@ -1,4 +1,4 @@
-
+package es.um.lego;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -96,7 +96,10 @@ public class ServAutorizacion extends HttpServlet {
     	        pw.close();
                 
             }
-	    } catch (OAuthProblemException | OAuthSystemException e) {
+	    } catch (OAuthProblemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (OAuthSystemException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
