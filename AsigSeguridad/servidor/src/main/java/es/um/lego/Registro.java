@@ -1,4 +1,4 @@
-package es.um.lego;
+package main.java.es.um.lego;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

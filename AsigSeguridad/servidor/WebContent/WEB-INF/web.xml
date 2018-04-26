@@ -9,13 +9,13 @@
 
 	<servlet>
 		<servlet-name>server</servlet-name>
-		<servlet-class>es.um.lego.ServAutorizacion</servlet-class>
+		<servlet-class>main.java.es.um.lego.ServAutorizacion</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>server</servlet-name>
-		<url-pattern>/hello</url-pattern>
+		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
 
 </web-app>

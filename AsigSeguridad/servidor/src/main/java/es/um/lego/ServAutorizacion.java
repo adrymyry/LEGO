@@ -1,4 +1,4 @@
-package es.um.lego;
+package main.java.es.um.lego;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -60,7 +60,10 @@ public class ServAutorizacion extends HttpServlet {
             redirectURI = oauthRequest.getParam(OAuth.OAUTH_REDIRECT_URI);
             
 			//Aquí hay que implementar la validación de que la aplicación cliente ha sido registrada previamente
-        
+        	String clientId = oauthRequest.getParam(OAuth.OAUTH_CLIENT_ID);
+        	if (!clientId.equals("id_prueba_registro")) {
+				System.out.println("Invalid client");
+			}
         
 			//Se comprueba si que se está solicitando un Authorization code
 			String responseType = oauthRequest.getParam(OAuth.OAUTH_RESPONSE_TYPE);
@@ -81,19 +84,19 @@ public class ServAutorizacion extends HttpServlet {
                 
                 //Sí en la solicitud desde el cliente se ha elegido la opcion 1 (a través del navegador)
                 //Redirige la respuesta a la uri indicada en el request
-                //response.sendRedirect(resp.getLocationUri());
-                //System.out.println("Redirige la respuesta a la uri: "+resp.getLocationUri());
+                response.sendRedirect(resp.getLocationUri());
+                System.out.println("Redirige la respuesta a la uri: "+resp.getLocationUri());
 
                 
             	System.out.println(resp.getResponseStatus()+"--"+resp.getLocationUri());
 
                 //Sí se ha eledigo la opcion 2
                 //Envia la respuesta
-                response.setStatus(resp.getResponseStatus());
-    	        PrintWriter pw = response.getWriter();
-    	        pw.print(resp.getLocationUri());
-    	        pw.flush();
-    	        pw.close();
+                //response.setStatus(resp.getResponseStatus());
+    	        //PrintWriter pw = response.getWriter();
+    	        //pw.print(resp.getLocationUri());
+    	        //pw.flush();
+    	        //pw.close();
                 
             }
 	    } catch (OAuthProblemException e) {

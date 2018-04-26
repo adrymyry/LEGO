@@ -32,6 +32,11 @@ public class OAuthClientTest {
 
         //Genear Request para el registro del cliente 
 		System.out.println("Falta implementar la generaci�n del request para el registro del cliente");
+//		OAuthClientRequest request = OAuthClientRequest
+//				.authorizationLocation("Http://localhost:8089/AsigSeguridad/ServAutorizacion")
+//				.setClientId("131804060198305")
+//				.setRedirectURI("http://localhost:8080/")
+//				.buildQueryMessage();
 
 		//Enviar Petici�n de registro al servidor de registro
 		System.out.println("Falta implementar el envio del request para el registro del cliente");
@@ -39,7 +44,7 @@ public class OAuthClientTest {
 		//Genera el Oauth request para solicitar el Authorization code
 		OAuthClientRequest request = OAuthClientRequest
 				.authorizationLocation("http://localhost:8889/AsigSeguridad/ServAutorizacion")
-				.setRedirectURI("http://localhost:8889/redirect")
+				.setRedirectURI("http://www.marca.com")
 				.setClientId("id_prueba_registro")
 				.setResponseType("code")
 				.buildQueryMessage();
@@ -48,24 +53,24 @@ public class OAuthClientTest {
 		
 		//1- Desde el navegador. Para realizar la solicitud hay que pegar en el navegador la uri indicada en la consola 
 		//IMPORTANTE: Revisad que la uri est� bien generada, a veces se incluyen caracteres extra�os
-		//System.out.println("Visita: " + request.getLocationUri() + "\n y copia/pega el c�digo de la uri aqui:");
+		System.out.println("Visita: " + request.getLocationUri() + "\n y copia/pega el c�digo de la uri aqui:");
 		
 		//2-Desde esta clase java
-		URL url = new URL(request.getLocationUri());
-		HttpURLConnection c = (HttpURLConnection)url.openConnection();
+		//URL url = new URL(request.getLocationUri());
+		//HttpURLConnection c = (HttpURLConnection)url.openConnection();
 		
 		//Procesar respuesta
-		BufferedReader in = new BufferedReader(new InputStreamReader(c.getInputStream()));
-		String inputLine;
-		StringBuffer response = new StringBuffer();
-
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
-		in.close();
+//		BufferedReader in = new BufferedReader(new InputStreamReader(c.getInputStream()));
+//		String inputLine;
+//		StringBuffer response = new StringBuffer();
+//
+//		while ((inputLine = in.readLine()) != null) {
+//			response.append(inputLine);
+//		}
+//		in.close();
 		
 		//Respuesta con el Authorization Code
-		System.out.println(response.toString());
+		//System.out.println(response.toString());
 		
 		System.out.println("Hay que extraer el Authorization Code de la response anterior e integrarlo en los pasos posteriores");
 		
