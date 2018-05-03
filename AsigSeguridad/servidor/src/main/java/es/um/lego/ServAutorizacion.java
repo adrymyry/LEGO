@@ -85,19 +85,19 @@ public class ServAutorizacion extends HttpServlet {
 
 					//Si en la solicitud desde el cliente se ha elegido la opcion 1 (a traves del navegador)
 					//Redirige la respuesta a la uri indicada en el request
-					//response.sendRedirect(resp.getLocationUri());
-					//System.out.println("Redirige la respuesta a la uri: "+resp.getLocationUri());
+					response.sendRedirect(resp.getLocationUri());
+					System.out.println("Redirige la respuesta a la uri: "+resp.getLocationUri());
 
 
 					System.out.println(resp.getResponseStatus()+"--"+resp.getLocationUri());
 
 					//Si se ha eledigo la opcion 2
 					//Envia la respuesta
-					response.setStatus(resp.getResponseStatus());
-					PrintWriter pw = response.getWriter();
-					pw.print(resp.getLocationUri());
-					pw.flush();
-					pw.close();
+//					response.setStatus(resp.getResponseStatus());
+//					PrintWriter pw = response.getWriter();
+//					pw.print(resp.getLocationUri());
+//					pw.flush();
+//					pw.close();
 
 				}
 			}
@@ -140,10 +140,10 @@ public class ServAutorizacion extends HttpServlet {
 			} else {
 				System.out.println("Recibe access token");
 
-				//Genera Authorization code
+				//Genera Access token
 				OAuthIssuerImpl oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
 
-				//Genera una respuesta con el Authorization Code response
+				//Genera una respuesta con el Access Token response
 				OAuthResponse resp = OAuthASResponse.tokenResponse(200)
 						.location(redirectURI)
 						.setTokenType(OAuth.DEFAULT_TOKEN_TYPE.toString())
@@ -156,6 +156,7 @@ public class ServAutorizacion extends HttpServlet {
 				System.out.println(resp.getResponseStatus()+"--"+resp.getLocationUri());
 
 				//Envia la respuesta
+
 				response.setStatus(resp.getResponseStatus());
 				response.setContentType(OAuth.ContentType.JSON);
 				PrintWriter pw = response.getWriter();

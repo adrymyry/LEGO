@@ -53,21 +53,18 @@ public class OAuthClientTest {
 		//Dos alternativas para enviar la petici�n
 
 		//1- Desde el navegador. Para realizar la solicitud hay que pegar en el navegador la uri indicada en la consola
-		//IMPORTANTE: Revisad que la uri est� bien generada, a veces se incluyen caracteres extra�os
-		//System.out.println("Visita: " + request.getLocationUri() + "\n y copia/pega el c�digo de la uri aqui:");
+		// IMPORTANTE: Revisad que la uri est� bien generada, a veces se incluyen caracteres extra�os
+		System.out.println("Visita: " + request.getLocationUri() + "\n y copia/pega el c�digo de la uri aqui:");
 
 		//2-Desde esta clase java
-		URL url = new URL(request.getLocationUri());
-		HttpURLConnection c = (HttpURLConnection) url.openConnection();
+		//URL url = new URL(request.getLocationUri());
+		//HttpURLConnection c = (HttpURLConnection) url.openConnection();
+
 
 		//Procesar respuesta
-		BufferedReader in = new BufferedReader(new InputStreamReader(c.getInputStream()));
-		String inputLine;
-		StringBuffer response = new StringBuffer();
-
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		//BufferedReader in = new BufferedReader(new InputStreamReader(c.getInputStream()));
+		String response = in.readLine();
 		in.close();
 
 		//Respuesta con el Authorization Code
@@ -102,11 +99,14 @@ public class OAuthClientTest {
 				.getExpiresIn());
 
 		//Realizamos la peticion de un recurso al servidor de recursos
-		System.out.println("Falta implementar la comunicaci�n con el Resource Server para acceder al recurso deseado presentando el access token");
-		//Facebook profile with the retrieved accessToken
-//		OAuthClientRequest bearerClientRequest = new OAuthBearerClientRequest("https://graph.facebook.com/me").setAccessToken(oAuthResponse.getAccessToken()).buildQueryMessage();
-//		OAuthResourceResponse resourceResponse = oAuthClient.resource(bearerClientRequest, OAuth.HttpMethod.GET, OAuthResourceResponse.class);
-//		System.out.println(resourceResponse.getBody());
+		System.out.println("Falta implementar la comunicaci�n con el Resource Server para acceder al recurso deseado presentando el access token\n" + oAuthResponse.getParam("redirect_uri"));
+		try {
+			OAuthClientRequest bearerClientRequest = new OAuthBearerClientRequest("http://localhost:8889/AsigSeguridad/resource").setAccessToken(oAuthResponse.getAccessToken()).buildQueryMessage();
+			OAuthResourceResponse resourceResponse = oAuthClient.resource(bearerClientRequest, OAuth.HttpMethod.GET, OAuthResourceResponse.class);
+			System.out.println(resourceResponse.getBody());
+		} catch (OAuthProblemException e) {
+			e.printStackTrace();
+		}
     }
 
 }
