@@ -61,7 +61,7 @@ public class ServAutorizacion extends HttpServlet {
             
 			//Aqui hay que implementar la validacion de que la aplicacion cliente ha sido registrada previamente
         	String clientId = oauthRequest.getParam(OAuth.OAUTH_CLIENT_ID);
-        	if (!clientId.equals("id_prueba_registro")) {
+        	if (!clientId.equals("id_rrhh")) {
 				System.out.println("Invalid client");
 				response.sendError(401, "Invalid client");
 			} else {
@@ -133,7 +133,7 @@ public class ServAutorizacion extends HttpServlet {
 
 			//Aqui hay que implementar la validacion de que la aplicacion cliente ha sido registrada previamente
 			String clientId = oauthRequest.getParam(OAuth.OAUTH_CLIENT_ID);
-			if (!clientId.equals("id_prueba_registro")) {
+			if (!clientId.equals("id_rrhh")) {
 				System.out.println("Invalid client");
 				response.sendError(401, "Invalid client");
 				//ToDo: comprobar client secret

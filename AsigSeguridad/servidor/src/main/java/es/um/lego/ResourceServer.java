@@ -8,6 +8,7 @@ import org.apache.oltu.oauth2.common.message.OAuthResponse;
 import org.apache.oltu.oauth2.common.message.types.ParameterStyle;
 import org.apache.oltu.oauth2.rs.request.OAuthAccessResourceRequest;
 import org.apache.oltu.oauth2.rs.response.OAuthRSResponse;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,12 +17,29 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 
 @WebServlet("/resource")
 public class ResourceServer extends HttpServlet{
 
+    private HashMap<String, JSONObject> resources;
+
+
     public ResourceServer () {
         super();
+        resources = new HashMap<String, JSONObject>();
+        resources.put("adrian", new JSONObject()
+                .put("name", "Adrian Miralles")
+                .put("payment", new JSONObject()
+                        .put("type", "Paypal")
+                        .put("account", "www.paypal.me/adrymyry")
+                ));
+        resources.put("jorge", new JSONObject()
+                .put("name", "Jorge Gallego")
+                .put("payment", new JSONObject()
+                        .put("type", "bank transfer")
+                        .put("account", "ES3475661593616856526088")
+                ));
     }
 
     @Override
@@ -42,8 +60,9 @@ public class ResourceServer extends HttpServlet{
                 // Return the resource
                 resp.setStatus(HttpServletResponse.SC_OK);
                 resp.setContentType(OAuth.ContentType.JSON);
+                JSONObject resource = resources.get("adrian");
                 PrintWriter pw = resp.getWriter();
-                pw.print("{ \"hola\": \"jorge\" }");
+                pw.print(resource.toString());
                 pw.flush();
                 pw.close();
 
