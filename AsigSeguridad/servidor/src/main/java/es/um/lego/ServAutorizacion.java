@@ -1,7 +1,8 @@
-package main.java.es.um.lego;
+package es.um.lego;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import es.um.lego.Common;
 import org.apache.oltu.oauth2.as.issuer.MD5Generator;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuer;
 import org.apache.oltu.oauth2.as.issuer.OAuthIssuerImpl;
@@ -61,7 +63,7 @@ public class ServAutorizacion extends HttpServlet {
             
 			//Aqui hay que implementar la validacion de que la aplicacion cliente ha sido registrada previamente
         	String clientId = oauthRequest.getParam(OAuth.OAUTH_CLIENT_ID);
-        	if (!clientId.equals("id_rrhh")) {
+        	if (!Common.existsClient(clientId)) {
 				System.out.println("Invalid client");
 				response.sendError(401, "Invalid client");
 			} else {
@@ -72,32 +74,41 @@ public class ServAutorizacion extends HttpServlet {
 
 					System.out.println("Recibe peticion de codigo");
 
-					//Genera Authorization code
-					OAuthIssuerImpl oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
+					//Se comprueba si solicita scopes permitidos
+					Set<String> scopes = oauthRequest.getScopes();
 
-					//Genera una respuesta con el Authorization Code response
-					OAuthResponse resp = OAuthASResponse.authorizationResponse(request,200)
-							.location(redirectURI)
-							.setCode(oauthIssuerImpl.authorizationCode())
-							.buildQueryMessage();
+					if (!Common.validateScopes(clientId, scopes)) {
+						System.out.println("Invalid scopes");
+						response.sendError(401, "Invalid scopes");
+					} else {
 
-					System.out.println("Genera OauthResponse");
+						//Genera Authorization code
+						OAuthIssuerImpl oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
 
-					//Si en la solicitud desde el cliente se ha elegido la opcion 1 (a traves del navegador)
-					//Redirige la respuesta a la uri indicada en el request
-					response.sendRedirect(resp.getLocationUri());
-					System.out.println("Redirige la respuesta a la uri: "+resp.getLocationUri());
+						//Genera una respuesta con el Authorization Code response
+						OAuthResponse resp = OAuthASResponse.authorizationResponse(request,200)
+								.location(redirectURI)
+								.setCode(oauthIssuerImpl.authorizationCode())
+								.buildQueryMessage();
+
+						System.out.println("Genera OauthResponse");
+
+						//Si en la solicitud desde el cliente se ha elegido la opcion 1 (a traves del navegador)
+						//Redirige la respuesta a la uri indicada en el request
+						response.sendRedirect(resp.getLocationUri());
+						System.out.println("Redirige la respuesta a la uri: "+resp.getLocationUri());
 
 
-					System.out.println(resp.getResponseStatus()+"--"+resp.getLocationUri());
+						System.out.println(resp.getResponseStatus()+"--"+resp.getLocationUri());
 
-					//Si se ha eledigo la opcion 2
-					//Envia la respuesta
-//					response.setStatus(resp.getResponseStatus());
-//					PrintWriter pw = response.getWriter();
-//					pw.print(resp.getLocationUri());
-//					pw.flush();
-//					pw.close();
+						//Si se ha eledigo la opcion 2
+						//Envia la respuesta
+	//					response.setStatus(resp.getResponseStatus());
+	//					PrintWriter pw = response.getWriter();
+	//					pw.print(resp.getLocationUri());
+	//					pw.flush();
+	//					pw.close();
+					}
 
 				}
 			}
@@ -132,11 +143,12 @@ public class ServAutorizacion extends HttpServlet {
 			redirectURI = oauthRequest.getParam(OAuth.OAUTH_REDIRECT_URI);
 
 			//Aqui hay que implementar la validacion de que la aplicacion cliente ha sido registrada previamente
+			//y presenta un client secret correcto
 			String clientId = oauthRequest.getParam(OAuth.OAUTH_CLIENT_ID);
-			if (!clientId.equals("id_rrhh")) {
+			String clientSecret = oauthRequest.getParam(OAuth.OAUTH_CLIENT_SECRET);
+			if (!Common.existsClient(clientId) && !Common.checkClientSecret(clientId, clientSecret)) {
 				System.out.println("Invalid client");
 				response.sendError(401, "Invalid client");
-				//ToDo: comprobar client secret
 			} else {
 				System.out.println("Recibe access token");
 

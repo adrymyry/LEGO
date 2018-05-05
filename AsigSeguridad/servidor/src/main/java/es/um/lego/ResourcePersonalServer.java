@@ -19,13 +19,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
-@WebServlet("/resource")
-public class ResourceServer extends HttpServlet{
+@WebServlet("/personal")
+public class ResourcePersonalServer extends HttpServlet{
 
     private HashMap<String, JSONObject> resources;
 
 
-    public ResourceServer () {
+    public ResourcePersonalServer () {
         super();
         resources = new HashMap<String, JSONObject>();
         resources.put("adrian", new JSONObject()
