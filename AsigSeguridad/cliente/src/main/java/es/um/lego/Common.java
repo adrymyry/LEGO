@@ -22,7 +22,7 @@ public class Common {
     public static final String TOKEN_SERVER_ENDPOINT = "http://server:8080/AsigSeguridad/ServAutorizacion";
     public static final String RESOURCE_PERSONAL_SERVER_ENDPOINT = "http://server:8080/AsigSeguridad/personal";
     public static final String RESOURCE_WORKSPACE_SERVER_ENDPOINT = "http://server:8080/AsigSeguridad/workspace";
-    public static final String RESOURCE_CAREER_SERVER_ENDPOINT = "http://server:8080/AsigSeguridad/careeer";
+    public static final String RESOURCE_CAREER_SERVER_ENDPOINT = "http://server:8080/AsigSeguridad/career";
 
     public static final String CLIENT_APPS_RRHH = "http://localhost:3000/InstaApps/rrhh";
     public static final String CLIENT_APPS_WORKSPACE = "http://localhost:3000/InstaApps/workspace";
