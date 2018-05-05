@@ -120,7 +120,7 @@ public class OAuthClientCareer extends HttpServlet {
 
 	private String obtainToken (String code, OAuthClient oAuthClient) throws OAuthSystemException, OAuthProblemException {
 
-            OAuthClientRequest req = Common.getoAuthTokenClientRequest(Common.TOKEN_SERVER_ENDPOINT, Common.CLIENT_CAREER_ID, Common.CLIENT_CAREER_SECRET, code);
+            OAuthClientRequest req = Common.getoAuthTokenClientRequest(Common.TOKEN_SERVER_ENDPOINT, Common.CLIENT_CAREER_ID, Common.CLIENT_CAREER_SECRET, code, Common.CLIENT_APPS_CAREER);
 
             //Recibimos la respuesta con el access token
             OAuthJSONAccessTokenResponse oAuthResponse = oAuthClient.accessToken(req);

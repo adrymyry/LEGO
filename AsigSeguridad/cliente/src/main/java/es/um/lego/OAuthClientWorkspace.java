@@ -113,7 +113,7 @@ public class OAuthClientWorkspace extends HttpServlet {
 
 	private String obtainToken (String code, OAuthClient oAuthClient) throws OAuthSystemException, OAuthProblemException {
 
-            OAuthClientRequest req = Common.getoAuthTokenClientRequest(Common.TOKEN_SERVER_ENDPOINT, Common.CLIENT_WORKSPACE_ID, Common.CLIENT_WORKSPACE_SECRET, code);
+            OAuthClientRequest req = Common.getoAuthTokenClientRequest(Common.TOKEN_SERVER_ENDPOINT, Common.CLIENT_WORKSPACE_ID, Common.CLIENT_WORKSPACE_SECRET, code, Common.CLIENT_APPS_WORKSPACE);
 
             //Recibimos la respuesta con el access token
             OAuthJSONAccessTokenResponse oAuthResponse = oAuthClient.accessToken(req);

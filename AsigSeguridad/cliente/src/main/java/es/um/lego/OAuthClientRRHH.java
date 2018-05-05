@@ -116,7 +116,7 @@ public class OAuthClientRRHH extends HttpServlet {
 
 	private String obtainToken (String code, OAuthClient oAuthClient) throws OAuthSystemException, OAuthProblemException {
 
-            OAuthClientRequest req = Common.getoAuthTokenClientRequest(Common.TOKEN_SERVER_ENDPOINT, Common.CLIENT_RRHH_ID, Common.CLIENT_RRHH_SECRET, code);
+            OAuthClientRequest req = Common.getoAuthTokenClientRequest(Common.TOKEN_SERVER_ENDPOINT, Common.CLIENT_RRHH_ID, Common.CLIENT_RRHH_SECRET, code, Common.CLIENT_APPS_RRHH);
 
             //Recibimos la respuesta con el access token
             OAuthJSONAccessTokenResponse oAuthResponse = oAuthClient.accessToken(req);

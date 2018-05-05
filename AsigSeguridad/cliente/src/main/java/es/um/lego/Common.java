@@ -41,11 +41,12 @@ public class Common {
                 .buildQueryMessage();
     }
 
-    public static OAuthClientRequest getoAuthTokenClientRequest (String tokenLocation, String clietId, String clientSecret, String code) throws OAuthSystemException {
+    public static OAuthClientRequest getoAuthTokenClientRequest (String tokenLocation, String clietId, String clientSecret, String code, String redirectURI) throws OAuthSystemException {
 
         return OAuthClientRequest
                 .tokenLocation(tokenLocation)
                 .setGrantType(GrantType.AUTHORIZATION_CODE)
+                .setRedirectURI(redirectURI)
                 .setClientId(clietId)
                 .setClientSecret(clientSecret)
                 .setCode(code)
