@@ -16,3 +16,4 @@ owncloud	IN	CNAME	owncloud.fb.com.
 radius	IN	A 	192.168.92.7
 ldap 	IN	A 	192.168.92.8
 www	IN	A	192.168.92.2
+apps	IN	A	192.168.92.2
