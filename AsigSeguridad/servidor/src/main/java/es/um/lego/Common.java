@@ -1,8 +1,5 @@
 package es.um.lego;
 
-import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
-import org.apache.oltu.oauth2.common.message.types.GrantType;
-
 import java.util.*;
 
 public class Common {
@@ -44,6 +41,22 @@ public class Common {
         scopes.put(CLIENT_CAREER_ID, careerScopes);
     }
 
+    public static final String USERNAME_ADRI = "adrian";
+    private static final String PASSWORD_ADRI = "12345";
+
+    public static final String USERNAME_JORGE = "jorge";
+    private static final String PASSWORD_JORGE = "12345";
+
+    private static final HashMap<String, String> credentials = new HashMap<String, String>();
+
+    static {
+        credentials.put(USERNAME_ADRI, PASSWORD_ADRI);
+        credentials.put(USERNAME_JORGE, PASSWORD_JORGE);
+    }
+
+    public static Map<String, AuthInfo> authorizationCodes = new HashMap<String, AuthInfo>();
+    public static Map<String, String> accessTokens = new HashMap<String, String>();
+
     public static boolean existsClient (String clientId) {
 
         return secrets.containsKey(clientId);
@@ -66,4 +79,11 @@ public class Common {
 
         return secrets.get(clientId).equals(clientSecret);
     }
+
+    public static boolean login (String username, String password) {
+        String truePass = credentials.get(username);
+        return password.equals(truePass);
+    }
+
+
 }

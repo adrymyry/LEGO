@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.HashMap;
 
 @WebServlet("/personal")
@@ -28,13 +29,13 @@ public class ResourcePersonalServer extends HttpServlet{
     public ResourcePersonalServer () {
         super();
         resources = new HashMap<String, JSONObject>();
-        resources.put("adrian", new JSONObject()
+        resources.put(Common.USERNAME_ADRI, new JSONObject()
                 .put("name", "Adrian Miralles")
                 .put("payment", new JSONObject()
                         .put("type", "Paypal")
                         .put("account", "www.paypal.me/adrymyry")
                 ));
-        resources.put("jorge", new JSONObject()
+        resources.put(Common.USERNAME_JORGE, new JSONObject()
                 .put("name", "Jorge Gallego")
                 .put("payment", new JSONObject()
                         .put("type", "bank transfer")
@@ -55,12 +56,30 @@ public class ResourcePersonalServer extends HttpServlet{
 
             System.out.println(accessToken);
             // Validate the access token
-            if (true) {
+            String code = Common.accessTokens.get(accessToken);
+            AuthInfo authInfo = Common.authorizationCodes.get(code);
+
+            if (authInfo == null) {
+                System.out.println("Invalid access token");
+                resp.sendError(401, "Invalid access token");
+
+            } else if (authInfo.expiresLastToken.before(new Date())) {
+                System.out.println("Access token is caducated");
+                resp.sendError(401, "Access token is caducated");
+
+            } else if (!authInfo.scopes.contains("personal")) {
+                System.out.println("Trying to access to an invalid scope");
+                resp.sendError(401, "Trying to access to an invalid scope");
+
+            } else {
+
+                String username = authInfo.username;
 
                 // Return the resource
                 resp.setStatus(HttpServletResponse.SC_OK);
                 resp.setContentType(OAuth.ContentType.JSON);
-                JSONObject resource = resources.get("adrian");
+                JSONObject resource = resources.get(username);
+                System.out.println("username = " + username + " " + resource.toString());
                 PrintWriter pw = resp.getWriter();
                 pw.print(resource.toString());
                 pw.flush();

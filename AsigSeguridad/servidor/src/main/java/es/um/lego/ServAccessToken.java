@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -57,6 +58,7 @@ public class ServAccessToken extends HttpServlet {
 		OAuthTokenRequest oauthRequest = null;
 		String redirectURI="";
 
+
 		try {
 
 			//Recepcion del oauthRequest
@@ -73,31 +75,46 @@ public class ServAccessToken extends HttpServlet {
 				System.out.println("Invalid client");
 				response.sendError(401, "Invalid client");
 			} else {
-				System.out.println("Recibe access token");
 
-				//Genera Access token
-				OAuthIssuerImpl oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
+				String code = oauthRequest.getParam(OAuth.OAUTH_CODE);
+				AuthInfo authInfo = Common.authorizationCodes.get(code);
 
-				//Genera una respuesta con el Access Token response
-				OAuthResponse resp = OAuthASResponse.tokenResponse(200)
-						.location(redirectURI)
-						.setTokenType(OAuth.DEFAULT_TOKEN_TYPE.toString())
-						.setAccessToken(oauthIssuerImpl.accessToken())
-						.setExpiresIn("3600")
-						.buildJSONMessage();
+				if (authInfo == null) {
 
-				System.out.println("Genera OauthResponse");
+					response.sendError(401, "Invalid code");
+				} else {
 
-				System.out.println(resp.getResponseStatus()+"--"+resp.getLocationUri());
+					//Genera Access token
+					OAuthIssuerImpl oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
 
-				//Envia la respuesta
+					String accessToken = oauthIssuerImpl.accessToken();
+					authInfo.lastToken = accessToken;
+					authInfo.expiresLastToken = new Date(System.currentTimeMillis() + 3600 * 1000);
 
-				response.setStatus(resp.getResponseStatus());
-				response.setContentType(OAuth.ContentType.JSON);
-				PrintWriter pw = response.getWriter();
-				pw.print(resp.getBody());
-				pw.flush();
-				pw.close();
+					Common.accessTokens.put(accessToken, code);
+
+					//Genera una respuesta con el Access Token response
+					OAuthResponse resp = OAuthASResponse.tokenResponse(200)
+							.location(redirectURI)
+							.setTokenType(OAuth.DEFAULT_TOKEN_TYPE.toString())
+							.setAccessToken(accessToken)
+							.setExpiresIn("3600")
+							.buildJSONMessage();
+
+					System.out.println("Genera OauthResponse");
+
+					System.out.println(resp.getResponseStatus()+"--"+resp.getLocationUri());
+
+					//Envia la respuesta
+
+					response.setStatus(resp.getResponseStatus());
+					response.setContentType(OAuth.ContentType.JSON);
+					PrintWriter pw = response.getWriter();
+					pw.print(resp.getBody());
+					pw.flush();
+					pw.close();
+				}
+
 			}
 
 

@@ -33,8 +33,6 @@ public class ServAutorizacionCode extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 
-	private static Map<String, AuthInfo> authorizationCodes = new HashMap<String, AuthInfo>();
-
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -94,7 +92,7 @@ public class ServAutorizacionCode extends HttpServlet {
 						AuthInfo authInfo = new AuthInfo(redirectURI, scopes);
 						System.out.println("Generado code " + code);
 
-						authorizationCodes.put(code, authInfo);
+						Common.authorizationCodes.put(code, authInfo);
 
 						response.setStatus(200);
 						response.setContentType("text/html");
@@ -131,43 +129,41 @@ public class ServAutorizacionCode extends HttpServlet {
     	String username = request.getParameter("username");
     	String password = request.getParameter("password");
 
-    	AuthInfo authInfo = authorizationCodes.get(code);
+    	AuthInfo authInfo = Common.authorizationCodes.get(code);
 
 		System.out.println("code: " + code + " username: " + username + " password: " + password);
 
-		//Genera una respuesta con el Authorization Code response
-		OAuthResponse resp = null;
-		try {
-			resp = OAuthASResponse.authorizationResponse(request,200)
-                    .location(authInfo.redirectUri)
-                    .setCode(code)
-                    .buildQueryMessage();
+		if (!Common.login(username, password)) {
+
+			response.sendError(401, "Invalid credentials");
+		} else {
+
+			authInfo.username = username;
+
+			//Genera una respuesta con el Authorization Code response
+			OAuthResponse resp = null;
+			try {
+				resp = OAuthASResponse.authorizationResponse(request,200)
+						.location(authInfo.redirectUri)
+						.setCode(code)
+						.buildQueryMessage();
+
+				System.out.println("Genera OauthResponse");
+
+				//Si en la solicitud desde el cliente se ha elegido la opcion 1 (a traves del navegador)
+				//Redirige la respuesta a la uri indicada en el request
+				response.sendRedirect(resp.getLocationUri());
+				System.out.println("Redirige la respuesta a la uri: "+resp.getLocationUri());
+
+				System.out.println(resp.getResponseStatus()+"--"+resp.getLocationUri());
 
 
-			System.out.println("Genera OauthResponse");
-
-			//Si en la solicitud desde el cliente se ha elegido la opcion 1 (a traves del navegador)
-			//Redirige la respuesta a la uri indicada en el request
-			response.sendRedirect(resp.getLocationUri());
-			System.out.println("Redirige la respuesta a la uri: "+resp.getLocationUri());
-
-			System.out.println(resp.getResponseStatus()+"--"+resp.getLocationUri());
-
-
-		} catch (OAuthSystemException e) {
-			e.printStackTrace();
+			} catch (OAuthSystemException e) {
+				e.printStackTrace();
+			}
 		}
+
 
 	}
 
-	private class AuthInfo {
-    	String redirectUri;
-    	Set<String> scopes;
-
-		public AuthInfo (String redirectUri, Set<String> scopes) {
-
-			this.redirectUri = redirectUri;
-			this.scopes = scopes;
-		}
-	}
 }
