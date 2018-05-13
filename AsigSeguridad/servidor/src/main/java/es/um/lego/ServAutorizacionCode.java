@@ -2,6 +2,8 @@ package es.um.lego;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -24,16 +26,19 @@ import org.apache.oltu.oauth2.common.message.OAuthResponse;
 import org.apache.oltu.oauth2.common.message.types.ResponseType;
 
 /**
- * Servlet implementation class ServAutorizacion
+ * Servlet implementation class ServAutorizacionCode
  */
-@WebServlet("/ServAutorizacion")
-public class ServAutorizacion extends HttpServlet {
+@WebServlet("/auth")
+public class ServAutorizacionCode extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
+
+	private static Map<String, AuthInfo> authorizationCodes = new HashMap<String, AuthInfo>();
+
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ServAutorizacion() {
+    public ServAutorizacionCode () {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -85,29 +90,23 @@ public class ServAutorizacion extends HttpServlet {
 						//Genera Authorization code
 						OAuthIssuerImpl oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
 
-						//Genera una respuesta con el Authorization Code response
-						OAuthResponse resp = OAuthASResponse.authorizationResponse(request,200)
-								.location(redirectURI)
-								.setCode(oauthIssuerImpl.authorizationCode())
-								.buildQueryMessage();
+						String code = oauthIssuerImpl.authorizationCode();
+						AuthInfo authInfo = new AuthInfo(redirectURI, scopes);
+						System.out.println("Generado code " + code);
 
-						System.out.println("Genera OauthResponse");
+						authorizationCodes.put(code, authInfo);
 
-						//Si en la solicitud desde el cliente se ha elegido la opcion 1 (a traves del navegador)
-						//Redirige la respuesta a la uri indicada en el request
-						response.sendRedirect(resp.getLocationUri());
-						System.out.println("Redirige la respuesta a la uri: "+resp.getLocationUri());
+						response.setStatus(200);
+						response.setContentType("text/html");
+						response.getWriter().append("<h1>Login</h1>");
+						response.getWriter().append("<h2>Do you want to grant access to Instagram to Career</h2>");
+						response.getWriter().append("<form action=\"?code=" + code + "\" method=\"POST\">");
+						response.getWriter().append("<input type=\"text\" name=\"username\" placeholder=\"username\" />");
+						response.getWriter().append("<input type=\"password\" name=\"password\" placeholder=\"password\" />");
+						response.getWriter().append("<button type=\"submit\">Submit</button>");
+						response.getWriter().append("</form>");
 
 
-						System.out.println(resp.getResponseStatus()+"--"+resp.getLocationUri());
-
-						//Si se ha eledigo la opcion 2
-						//Envia la respuesta
-	//					response.setStatus(resp.getResponseStatus());
-	//					PrintWriter pw = response.getWriter();
-	//					pw.print(resp.getLocationUri());
-	//					pw.flush();
-	//					pw.close();
 					}
 
 				}
@@ -127,64 +126,48 @@ public class ServAutorizacion extends HttpServlet {
 	 */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     		throws ServletException, IOException {
-    	
-    	//Este metodo se va a encargar de proporcionar el Access token
-    	System.out.println("Aqui se debe gestionar el Access Token");
 
-		OAuthTokenRequest oauthRequest = null;
-		String redirectURI="";
+    	String code = request.getParameter("code");
+    	String username = request.getParameter("username");
+    	String password = request.getParameter("password");
 
+    	AuthInfo authInfo = authorizationCodes.get(code);
+
+		System.out.println("code: " + code + " username: " + username + " password: " + password);
+
+		//Genera una respuesta con el Authorization Code response
+		OAuthResponse resp = null;
 		try {
-
-			//Recepcion del oauthRequest
-			oauthRequest = new OAuthTokenRequest(request);
-
-			//Direccion de respuesta
-			redirectURI = oauthRequest.getParam(OAuth.OAUTH_REDIRECT_URI);
-
-			//Aqui hay que implementar la validacion de que la aplicacion cliente ha sido registrada previamente
-			//y presenta un client secret correcto
-			String clientId = oauthRequest.getParam(OAuth.OAUTH_CLIENT_ID);
-			String clientSecret = oauthRequest.getParam(OAuth.OAUTH_CLIENT_SECRET);
-			if (!Common.existsClient(clientId) && !Common.checkClientSecret(clientId, clientSecret)) {
-				System.out.println("Invalid client");
-				response.sendError(401, "Invalid client");
-			} else {
-				System.out.println("Recibe access token");
-
-				//Genera Access token
-				OAuthIssuerImpl oauthIssuerImpl = new OAuthIssuerImpl(new MD5Generator());
-
-				//Genera una respuesta con el Access Token response
-				OAuthResponse resp = OAuthASResponse.tokenResponse(200)
-						.location(redirectURI)
-						.setTokenType(OAuth.DEFAULT_TOKEN_TYPE.toString())
-						.setAccessToken(oauthIssuerImpl.accessToken())
-						.setExpiresIn("3600")
-						.buildJSONMessage();
-
-				System.out.println("Genera OauthResponse");
-
-				System.out.println(resp.getResponseStatus()+"--"+resp.getLocationUri());
-
-				//Envia la respuesta
-
-				response.setStatus(resp.getResponseStatus());
-				response.setContentType(OAuth.ContentType.JSON);
-				PrintWriter pw = response.getWriter();
-				pw.print(resp.getBody());
-				pw.flush();
-				pw.close();
-			}
+			resp = OAuthASResponse.authorizationResponse(request,200)
+                    .location(authInfo.redirectUri)
+                    .setCode(code)
+                    .buildQueryMessage();
 
 
-		} catch (OAuthProblemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Genera OauthResponse");
+
+			//Si en la solicitud desde el cliente se ha elegido la opcion 1 (a traves del navegador)
+			//Redirige la respuesta a la uri indicada en el request
+			response.sendRedirect(resp.getLocationUri());
+			System.out.println("Redirige la respuesta a la uri: "+resp.getLocationUri());
+
+			System.out.println(resp.getResponseStatus()+"--"+resp.getLocationUri());
+
+
 		} catch (OAuthSystemException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
+	}
+
+	private class AuthInfo {
+    	String redirectUri;
+    	Set<String> scopes;
+
+		public AuthInfo (String redirectUri, Set<String> scopes) {
+
+			this.redirectUri = redirectUri;
+			this.scopes = scopes;
+		}
 	}
 }

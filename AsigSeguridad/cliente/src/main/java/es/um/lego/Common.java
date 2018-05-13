@@ -18,11 +18,11 @@ public class Common {
     public static final String CLIENT_CAREER_SECRET = "client_career_secret";
     public static final String SCOPE_CAREER_DATA = "career";
 
-    public static final String CODE_SERVER_ENDPOINT = "http://localhost:8889/AsigSeguridad/ServAutorizacion";
-    public static final String TOKEN_SERVER_ENDPOINT = "http://server:8080/AsigSeguridad/ServAutorizacion";
-    public static final String RESOURCE_PERSONAL_SERVER_ENDPOINT = "http://server:8080/AsigSeguridad/personal";
-    public static final String RESOURCE_WORKSPACE_SERVER_ENDPOINT = "http://server:8080/AsigSeguridad/workspace";
-    public static final String RESOURCE_CAREER_SERVER_ENDPOINT = "http://server:8080/AsigSeguridad/career";
+    public static final String CODE_SERVER_ENDPOINT = "http://localhost:8889/ServAutorizacion/auth";
+    public static final String TOKEN_SERVER_ENDPOINT = "http://server:8080/ServAutorizacion/token";
+    public static final String RESOURCE_PERSONAL_SERVER_ENDPOINT = "http://server:8080/ServAutorizacion/personal";
+    public static final String RESOURCE_WORKSPACE_SERVER_ENDPOINT = "http://server:8080/ServAutorizacion/workspace";
+    public static final String RESOURCE_CAREER_SERVER_ENDPOINT = "http://server:8080/ServAutorizacion/career";
 
     public static final String CLIENT_APPS_RRHH = "http://localhost:3000/InstaApps/rrhh";
     public static final String CLIENT_APPS_WORKSPACE = "http://localhost:3000/InstaApps/workspace";
