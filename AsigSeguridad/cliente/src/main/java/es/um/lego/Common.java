@@ -18,15 +18,15 @@ public class Common {
     public static final String CLIENT_CAREER_SECRET = "client_career_secret";
     public static final String SCOPE_CAREER_DATA = "career";
 
-    public static final String CODE_SERVER_ENDPOINT = "http://localhost:8889/ServAutorizacion/auth";
-    public static final String TOKEN_SERVER_ENDPOINT = "http://server:8080/ServAutorizacion/token";
-    public static final String RESOURCE_PERSONAL_SERVER_ENDPOINT = "http://server:8080/ServAutorizacion/personal";
-    public static final String RESOURCE_WORKSPACE_SERVER_ENDPOINT = "http://server:8080/ServAutorizacion/workspace";
-    public static final String RESOURCE_CAREER_SERVER_ENDPOINT = "http://server:8080/ServAutorizacion/career";
+    public static final String CODE_SERVER_ENDPOINT = "http://auth.fb.com:8889/ServAutorizacion/auth";
+    public static final String TOKEN_SERVER_ENDPOINT = "http://auth.fb.com:8889/ServAutorizacion/token";
+    public static final String RESOURCE_PERSONAL_SERVER_ENDPOINT = "http://api.fb.com:8889/ServAutorizacion/personal";
+    public static final String RESOURCE_WORKSPACE_SERVER_ENDPOINT = "http://api.fb.com:8889/ServAutorizacion/workspace";
+    public static final String RESOURCE_CAREER_SERVER_ENDPOINT = "http://api.fb.com:8889/ServAutorizacion/career";
 
-    public static final String CLIENT_APPS_RRHH = "http://localhost:3000/InstaApps/rrhh";
-    public static final String CLIENT_APPS_WORKSPACE = "http://localhost:3000/InstaApps/workspace";
-    public static final String CLIENT_APPS_CAREER = "http://localhost:3000/InstaApps/career";
+    public static final String CLIENT_APPS_RRHH = "http://apps.ig.com:3000/InstaApps/rrhh";
+    public static final String CLIENT_APPS_WORKSPACE = "http://apps.ig.com:3000/InstaApps/workspace";
+    public static final String CLIENT_APPS_CAREER = "http://apps.ig.com:3000/InstaApps/career";
 
 
 
