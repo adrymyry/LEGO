@@ -94,10 +94,14 @@ public class ServAutorizacionCode extends HttpServlet {
 
 						Common.authorizationCodes.put(code, authInfo);
 
+						String textScopes = "";
+						for (String scope : scopes) {
+							textScopes += " " + scope;
+						}
 						response.setStatus(200);
 						response.setContentType("text/html");
 						response.getWriter().append("<h1>Login</h1>");
-						response.getWriter().append("<h2>Do you want to grant access to Instagram to Career</h2>");
+						response.getWriter().append("<h2>Authenticate if you want to grant access to " + Common.getClientName(clientId) + " to your scope" + textScopes +" </h2>");
 						response.getWriter().append("<form action=\"?code=" + code + "\" method=\"POST\">");
 						response.getWriter().append("<input type=\"text\" name=\"username\" placeholder=\"username\" />");
 						response.getWriter().append("<input type=\"password\" name=\"password\" placeholder=\"password\" />");

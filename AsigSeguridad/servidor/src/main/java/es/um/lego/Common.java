@@ -6,21 +6,24 @@ public class Common {
 
     private static final String CLIENT_RRHH_ID = "client_rrhh_id";
     private static final String CLIENT_RRHH_SECRET = "client_rrhh_secret";
+    private static final String CLIENT_RRHH_NAME = "Instagram RRHH";
     private static final String SCOPE_PERSONAL_DATA = "personal";
 
     private static final String CLIENT_WORKSPACE_ID = "client_workspace_id";
     private static final String CLIENT_WORKSPACE_SECRET = "client_workspace_secret";
+    private static final String CLIENT_WORKSPACE_NAME = "Instagram Workspace";
     private static final String SCOPE_WORKSPACE = "workspace";
 
     private static final String CLIENT_CAREER_ID = "client_career_id";
     private static final String CLIENT_CAREER_SECRET = "client_career_secret";
+    private static final String CLIENT_CAREER_NAME = "Instagram career";
     private static final String SCOPE_CAREER_DATA = "career";
 
     private static final HashMap<String, String> secrets = new HashMap<String, String>();
 
     static {
         secrets.put(CLIENT_RRHH_ID, CLIENT_RRHH_SECRET);
-        secrets.put(CLIENT_CAREER_ID, CLIENT_CAREER_SECRET);
+        secrets.put(CLIENT_CAREER_ID, CLIENT_WORKSPACE_SECRET);
         secrets.put(CLIENT_WORKSPACE_ID, CLIENT_CAREER_SECRET);
     }
 
@@ -39,6 +42,14 @@ public class Common {
         Set<String> careerScopes = new HashSet<String>();
         careerScopes.add(SCOPE_CAREER_DATA);
         scopes.put(CLIENT_CAREER_ID, careerScopes);
+    }
+
+    public static final HashMap<String, String> names = new HashMap<String, String>();
+
+    static  {
+        names.put(CLIENT_RRHH_ID, CLIENT_RRHH_NAME);
+        names.put(CLIENT_CAREER_ID, CLIENT_CAREER_NAME);
+        names.put(CLIENT_WORKSPACE_ID, CLIENT_WORKSPACE_NAME);
     }
 
     public static final String USERNAME_ADRI = "adrian";
@@ -85,5 +96,7 @@ public class Common {
         return password.equals(truePass);
     }
 
-
+    public static String getClientName (String clientId) {
+        return names.get(clientId);
+    }
 }
