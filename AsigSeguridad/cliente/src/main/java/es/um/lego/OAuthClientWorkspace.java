@@ -31,6 +31,13 @@ public class OAuthClientWorkspace extends HttpServlet {
 	@Override
 	protected void doGet (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		// Check context ip to avoid accessing to this application from machines not placed in Instagram
+		String ipAddress = request.getRemoteAddr();
+		System.out.println(ipAddress);
+		if (!ipAddress.startsWith("192.168.92.")) {
+			response.sendError(401, "Accessing from an invalid PC");
+		}
+
 		String queryParams = request.getQueryString();
 
 		try {

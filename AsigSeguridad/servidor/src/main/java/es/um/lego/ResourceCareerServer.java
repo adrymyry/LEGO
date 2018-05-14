@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -52,6 +54,15 @@ public class ResourceCareerServer extends HttpServlet{
     @Override
     protected void doGet (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        // Check context time to avoid accessing to this resource in bad hours
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+
+        String actualTime = simpleDateFormat.format(calendar.getTime());
+
+        if (actualTime.compareTo("09:00") == -1 || actualTime.compareTo("21.00") == 1) {
+            resp.sendError(401, "Resource unavailable at " + actualTime);
+        }
 
         try {
             // Make the OAuth Request out of this request
