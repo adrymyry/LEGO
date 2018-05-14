@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+  cliente:
+    image: tomcat:8.5-jre8-alpine
+    volumes:
+      - ./target/cliente-1.0-SNAPSHOT.war:/usr/local/tomcat/webapps/InstaApps.war
+    ports:
+      - 3000:8080

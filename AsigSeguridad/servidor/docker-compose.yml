@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+  server:
+    image: tomcat:8.5-jre8-alpine
+    volumes:
+      - ./target/server-1.0-SNAPSHOT.war:/usr/local/tomcat/webapps/ServAutorizacion.war
+    ports:
+      - 8889:8080
